@@ -1,0 +1,211 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+// Classe para representar um cliente
+class Cliente {
+    private String nome;
+    private String telefone;
+
+    public Cliente(String nome, String telefone) {
+        this.nome = nome;
+        this.telefone = telefone;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    @Override
+    public String toString() {
+        return "Nome: " + nome + ", Telefone: " + telefone;
+    }
+}
+
+// Classe para representar um veículo
+class Veiculo {
+    private String placa;
+    private String modelo;
+
+    public Veiculo(String placa, String modelo) {
+        this.placa = placa;
+        this.modelo = modelo;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    @Override
+    public String toString() {
+        return "Placa: " + placa + ", Modelo: " + modelo;
+    }
+}
+
+// Classe para representar um serviço
+class Servico {
+    private Veiculo veiculo;
+    private double valor;
+
+    public Servico(Veiculo veiculo, double valor) {
+        this.veiculo = veiculo;
+        this.valor = valor;
+    }
+
+    public Veiculo getVeiculo() {
+        return veiculo;
+    }
+
+    public double getValor() {
+        return valor;
+    }
+
+    @Override
+    public String toString() {
+        return "Veículo: " + veiculo + ", Valor: R$ " + valor;
+    }
+}
+
+// Classe principal do sistema
+public class LavaCar {
+    private List<Cliente> clientes = new ArrayList<>();
+    private List<Veiculo> veiculos = new ArrayList<>();
+    private List<Servico> servicos = new ArrayList<>();
+
+    public void adicionarCliente(String nome, String telefone) {
+        clientes.add(new Cliente(nome, telefone));
+        System.out.println("Cliente adicionado com sucesso.");
+    }
+
+    public void adicionarVeiculo(String placa, String modelo) {
+        veiculos.add(new Veiculo(placa, modelo));
+        System.out.println("Veículo adicionado com sucesso.");
+    }
+
+    public void adicionarServico(String placa, double valor) {
+        Veiculo veiculo = encontrarVeiculoPorPlaca(placa);
+        if (veiculo != null) {
+            servicos.add(new Servico(veiculo, valor));
+            System.out.println("Serviço adicionado com sucesso.");
+        } else {
+            System.out.println("Veículo não encontrado.");
+        }
+    }
+
+    private Veiculo encontrarVeiculoPorPlaca(String placa) {
+        for (Veiculo veiculo : veiculos) {
+            if (veiculo.getPlaca().equals(placa)) {
+                return veiculo;
+            }
+        }
+        return null;
+    }
+
+    public void mostrarClientes() {
+        if (clientes.isEmpty()) {
+            System.out.println("Nenhum cliente cadastrado.");
+        } else {
+            System.out.println("Clientes:");
+            for (Cliente cliente : clientes) {
+                System.out.println(cliente);
+            }
+        }
+    }
+
+    public void mostrarVeiculos() {
+        if (veiculos.isEmpty()) {
+            System.out.println("Nenhum veículo cadastrado.");
+        } else {
+            System.out.println("Veículos:");
+            for (Veiculo veiculo : veiculos) {
+                System.out.println(veiculo);
+            }
+        }
+    }
+
+    public void mostrarServicos() {
+        if (servicos.isEmpty()) {
+            System.out.println("Nenhum serviço registrado.");
+        } else {
+            System.out.println("Serviços:");
+            for (Servico servico : servicos) {
+                System.out.println(servico);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        LavaCar sistema = new LavaCar();
+        Scanner scanner = new Scanner(System.in);
+        int opcao = -1;
+
+        while (opcao != 0) {
+            System.out.println("\nMenu:");
+            System.out.println("1. Adicionar Cliente");
+            System.out.println("2. Adicionar Veículo");
+            System.out.println("3. Adicionar Serviço");
+            System.out.println("4. Mostrar Clientes");
+            System.out.println("5. Mostrar Veículos");
+            System.out.println("6. Mostrar Serviços");
+            System.out.println("0. Sair");
+            System.out.print("Escolha uma opção: ");
+
+            try {
+                opcao = scanner.nextInt();
+                scanner.nextLine();  // Limpar buffer do scanner
+
+                switch (opcao) {
+                    case 1:
+                        System.out.print("Nome do Cliente: ");
+                        String nome = scanner.nextLine();
+                        System.out.print("Telefone do Cliente: ");
+                        String telefone = scanner.nextLine();
+                        sistema.adicionarCliente(nome, telefone);
+                        break;
+                    case 2:
+                        System.out.print("Placa do Veículo: ");
+                        String placa = scanner.nextLine();
+                        System.out.print("Modelo do Veículo: ");
+                        String modelo = scanner.nextLine();
+                        sistema.adicionarVeiculo(placa, modelo);
+                        break;
+                    case 3:
+                        System.out.print("Placa do Veículo para Serviço: ");
+                        String placaServico = scanner.nextLine();
+                        System.out.print("Valor do Serviço: ");
+                        double valor = scanner.nextDouble();
+                        scanner.nextLine();  // Limpar buffer do scanner
+                        sistema.adicionarServico(placaServico, valor);
+                        break;
+                    case 4:
+                        sistema.mostrarClientes();
+                        break;
+                    case 5:
+                        sistema.mostrarVeiculos();
+                        break;
+                    case 6:
+                        sistema.mostrarServicos();
+                        break;
+                    case 0:
+                        System.out.println("Saindo...");
+                        break;
+                    default:
+                        System.out.println("Opção inválida. Tente novamente.");
+                }
+            } catch (Exception e) {
+                System.out.println("Entrada inválida. Por favor, insira um número.");
+                scanner.next(); // Limpa o buffer do scanner
+            }
+        }
+
+        scanner.close();
+    }
+}
