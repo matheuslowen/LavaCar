@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-// Classe para representar um cliente
 class Cliente {
     private String nome;
     private String telefone;
@@ -50,7 +49,6 @@ class Veiculo {
     }
 }
 
-// Classe para representar um serviço
 class Servico {
     private Veiculo veiculo;
     private double valor;
@@ -74,7 +72,6 @@ class Servico {
     }
 }
 
-// Classe principal do sistema
 public class LavaCar {
     private List<Cliente> clientes = new ArrayList<>();
     private List<Veiculo> veiculos = new ArrayList<>();
